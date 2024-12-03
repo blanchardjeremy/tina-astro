@@ -1,11 +1,23 @@
-import { useTina } from "tinacms/dist/react";
+import { tinaField, useTina } from "tinacms/dist/react";
+import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text";
 
-export const MyComponent = (props) => {
-  const { data } = useTina(props);
+interface PostData {
+  post: {
+    body: TinaMarkdownContent;
+  };
+}
+
+export const MyComponent = (props: any) => {
+  const { data } = useTina<PostData>(props);
 
   return (
-    <pre style={{ margin: "100px auto", width: "1000px" }}>
-      {JSON.stringify(data?.post?.body, null, 2)}
-    </pre>
+    <div style={{ margin: "100px auto", width: "auto" }}>
+      {data.post.body ? (
+        <TinaMarkdown content={data.post.body} data-tina-field={tinaField(data.post, "body")} />
+      ) : (
+        <p>No content available</p>
+      )}
+      {/* {JSON.stringify(data?.post?.body, null, 2)} */}
+    </div>
   );
 };
